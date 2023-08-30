@@ -1,5 +1,5 @@
 // Choosing input pin (?)
-int sensor = A3;
+int lightSensor = A3;
 
 void setup() {
   // Starting communication between board and pc
