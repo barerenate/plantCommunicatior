@@ -127,7 +127,7 @@ void wifi_init() //send AT commands to module
   if (!No_IP)
   {
     Serial.println("Connecting Wifi....");
-    establishConnection("AT+CWJAP=\"404\",\"90271560\"", 7000); //provide your WiFi username and password here
+    establishConnection("AT+CWJAP=\"wifiname\",\"passw\"", 7000); //provide your WiFi username and password here
   }
   else
   {
