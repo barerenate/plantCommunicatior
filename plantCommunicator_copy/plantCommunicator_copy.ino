@@ -6,6 +6,8 @@ int tempSensor = A0; //This is the Arduino Pin that will read the sensor output
 int tempInput; //The variable we will use to store the sensor input
 double temp; //The variable we will use to store temperature in degrees.
 ArrayList<double> lightValues; //arraylist to store light sensor data
+double addedTemp = 0; //add Temperature on top of each other
+bool belowZero = false;
 
 void measure(int count){
   //double i = 0;
@@ -19,6 +21,14 @@ void measure(int count){
   temp = temp * 5; //multiply by 5V to get voltage
   temp = temp - 0.5; //Subtract the offset
   temp = temp * 100; //Convert to degrees
+
+  // add temp to total temperature
+  addedTemp =addedTemp + temp;
+
+  // check if temperature is below 0 
+  if (temp < 30){
+    belowZero = true;
+  }
 
   // Read raw data form phototransistor
   double rawLightValue = analogRead(lightSensor);
@@ -49,9 +59,11 @@ void setup() {
   Serial.begin(9600);
 
   //amount of measurments (at the moment:36 so we have three minutes in total)
-  measure(36);
+  int a = 36; //number of loops to measure 
+  measure(a);
 
-  //call for array list
+  // calculate the average temperature 
+  double mean = addedTemp/a;
 
 
   //sort initial arrayList into three categories (sunny, bright/cloudy/shadow, dark)
@@ -73,14 +85,22 @@ void setup() {
   Serial.print("Seconds of sunshine: ");
   Serial.println(sunnyMin);
 
-  Serial.print("Seconds of shade: ln: "); //?? doesn't sound right
+  Serial.print("Seconds of shade: "); //?? doesn't sound right
   Serial.println(shadowMin);
 
   Serial.print("Seconds of darkness: ");
   Serial.println(darkMin);
 
+  Serial.print("Average temperature: ");
+  Serial.println(mean);
+
+  Serial.print("Was the temperature below zero? ");
+  Serial.println(belowZero);
+
+
   }
 
   void loop() { 
 }
+
 
