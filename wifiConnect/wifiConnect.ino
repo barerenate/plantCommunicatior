@@ -6,13 +6,27 @@ char pass[] = "hello123";    // your network password
 int status = WL_IDLE_STATUS;
 WiFiServer server(80);
 
-int sensePin = A0; //This is the Arduino Pin that will read the sensor output
+int tempPin = A0;
+int moistPin = A2;
+int lightPin = A3;
 
 float getTemp() {
-  int tempRead = analogRead(sensePin); //read the analog sensor and store it
+  int tempRead = analogRead(tempPin); //read the analog sensor and store it
   float voltage = tempRead * (5.0 / 1024.0);
   float temp = (voltage - 0.5) * 100; //Convert to degrees
   return temp;
+}
+
+int getMoisture() {
+  int moistRead = analogRead(moistPin);
+  int moisture = map(moistRead, 0, 1023, 0, 100);
+  return moisture;
+}
+
+int getLightLevel() {
+  int lightRead = analogRead(lightPin);
+  int light = map(lightRead, 0, 1023, 0, 100);
+  return light;
 }
 
 void setup() {
@@ -65,15 +79,23 @@ void loop() {
     client.println();                     // the separator between HTTP header and body
 
     float temphtml = getTemp();
+    int moisthtml = getMoisture();
+    int lighthtml = getLightLevel();
 
     const char *INDEX_HTML = R"=====(
       <!DOCTYPE HTML>
       <html>
       <p style = "color:red;">Temperature: "tempMarker"</p>
+      <br>
+      <p style = "color:blue;">Moisture: "moistureMarker"</p>
+      <br>
+      <p style = "color:yellow;">Light: "lightMarker"</p>
       </html>)=====";
 
     String html = String(INDEX_HTML);
     html.replace("tempMarker", String(temphtml));
+    html.replace("moistureMarker", String(moisthtml));
+    html.replace("lightMarker", String(lighthtml));
     client.println(html);
     client.flush();
 
