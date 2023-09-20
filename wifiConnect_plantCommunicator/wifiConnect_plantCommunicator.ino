@@ -2,8 +2,8 @@
 #include "index.h"
 #include "ArrayList.h"
 
-char ssid[] = "AndroidAP";        // your network SSID (name)
-char pass[] = "glye5160";    // your network password
+char ssid[] = "Testnett";        // your network SSID (name)
+char pass[] = "Hahalmao";    // your network password
 
 int status = WL_IDLE_STATUS;
 WiFiServer server(80);
@@ -32,6 +32,7 @@ int getMoisture() {
 
 String checkMoistThresh(int x) {
   int moisture = x;
+  int moistThreshold = 10;
 
   if (moisture < moistThreshold)
     return "Plant needs water";
@@ -146,6 +147,14 @@ void loop() {
   // calculate the average temperature 
   double mean = addedTemp/a;
 
+  //current light level from sensor
+  int currentLight = getLightLevel();
+
+  //current temp
+  int currentTemp = getTemp();
+
+
+
   //sort initial arrayList into three categories (sunny, bright/cloudy/shadow, dark)
   //Values still need to be corrected
   ArrayList<double> sunnyValues = lightValues.filter([](double n) -> bool{return n > 98;});
@@ -181,13 +190,16 @@ void loop() {
       <p style = "color:yellow;">Was the temperature below zero? "zeroMarker"</p>
       </html>)=====";
   */
-    String moistureCheck = checkMoistThresh(currentMoisture);
+    // getMoisture() = currentMoisture;
+    // String moistureCheck = checkMoistThresh(currentMoisture);
 
     String html = String(INDEX_HTML);
+    html.replace("lightMarker", String(currentLight));
     html.replace("sunnyMarker", String(sunnyMin));
     html.replace("shadeMarker", String(shadowMin));
     html.replace("darknessMarker", String(darkMin));
     html.replace("moistureMarker", String(moisthtml));
+    html.replace("tempMarker", String(currentTemp));
     html.replace("meanMarker", String(mean));
     html.replace("zeroMarker", String(belowZero));
     client.println(html);
