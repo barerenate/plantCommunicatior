@@ -1,4 +1,11 @@
+// Sources:
+// Moisturesensor: https://arduinogetstarted.com/tutorials/arduino-soil-moisture-sensor
+// Lightsensor: https://www.youtube.com/watch?v=qKku-mmwNIA
+// Temperaturesensor: https://lastminuteengineers.com/tmp36-temperature-sensor-arduino-tutorial/
+// Wificonnection and web-server: https://arduinogetstarted.com/tutorials/arduino-web-server
+
 #include "WiFiS3.h"
+#include "index.h"
 
 char ssid[] = "Renate";        // your network SSID (name)
 char pass[] = "hello123";    // your network password
@@ -10,6 +17,8 @@ int tempPin = A0;
 int moistPin = A2;
 int lightPin = A3;
 
+int moistThreshold = 2;
+
 float getTemp() {
   int tempRead = analogRead(tempPin); //read the analog sensor and store it
   float voltage = tempRead * (5.0 / 1024.0);
@@ -20,7 +29,18 @@ float getTemp() {
 int getMoisture() {
   int moistRead = analogRead(moistPin);
   int moisture = map(moistRead, 0, 1023, 0, 100);
+
   return moisture;
+}
+
+String checkMoistThresh(int x) {
+  int moisture = x;
+
+  if (moisture < moistThreshold)
+    return "Plant needs water";
+  else
+   return "Plant is happy :)";
+
 }
 
 int getLightLevel() {
@@ -78,24 +98,18 @@ void loop() {
     client.println("Connection: close");  // the connection will be closed after completion of the response
     client.println();                     // the separator between HTTP header and body
 
-    float temphtml = getTemp();
-    int moisthtml = getMoisture();
-    int lighthtml = getLightLevel();
+    float currentTemp = getTemp();
+    int currentMoisture = getMoisture();
+    int currentLightLevel = getLightLevel();
 
-    const char *INDEX_HTML = R"=====(
-      <!DOCTYPE HTML>
-      <html>
-      <p style = "color:red;">Temperature: "tempMarker"</p>
-      <br>
-      <p style = "color:blue;">Moisture: "moistureMarker"</p>
-      <br>
-      <p style = "color:yellow;">Light: "lightMarker"</p>
-      </html>)=====";
+    String moistureCheck = checkMoistThresh(currentMoisture);
+
 
     String html = String(INDEX_HTML);
-    html.replace("tempMarker", String(temphtml));
-    html.replace("moistureMarker", String(moisthtml));
-    html.replace("lightMarker", String(lighthtml));
+    html.replace("tempMarker", String(currentTemp));
+    html.replace("moistureMarker", String(currentMoisture));
+    html.replace("lightMarker", String(currentLightLevel));
+    html.replace("statusMarker", String(moistureCheck));
     client.println(html);
     client.flush();
 
