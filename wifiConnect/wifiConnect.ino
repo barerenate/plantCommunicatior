@@ -7,8 +7,8 @@
 #include "WiFiS3.h"
 #include "index.h"
 
-char ssid[] = "Renate";        // your network SSID (name)
-char pass[] = "hello123";    // your network password
+char ssid[] = "Testnett";        // your network SSID (name)
+char pass[] = "Hahalmao";    // your network password
 
 int status = WL_IDLE_STATUS;
 WiFiServer server(80);
