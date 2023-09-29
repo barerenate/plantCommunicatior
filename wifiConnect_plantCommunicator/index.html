@@ -6,91 +6,214 @@
     <title>Plant Communicator</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: Arial, Helvetica, sans-serif, sans-serif;
             text-align: center;
+            
+            margin: 0;
+        }
+
+        h1 {
+            margin: 0;
+            padding: 1rem;
+            font-size: 2rem;
+            color: white;
         }
         
-        .container {
+
+        .header {
+            display: flex;
+            background-color: rgb(109, 155, 52);
+        }
+
+        .descContainer {
+            margin: 0;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #description {
+            padding: 1rem;
+            border: 2px solid #333;
+            
+            width: 50%;
+            margin-bottom: 2rem;
+            margin-top: 2rem;
+
+            border-radius: 50px;
+
+        }
+
+        #status {
+            padding: 1rem;
+            background-color: rgb(202, 255, 195);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: center;
+            width: 40%;
+            margin-left: 5%;
+
+            border-radius: 5px;
+
+            
+        }
+        
+        #status h2 {
+            margin-top: 0;
+            font-size: 1.2rem;
+
+        }
+
+        .sensorContainer {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
             align-items: center;
             margin: 20px;
             padding: 20px;
+
+            
             
         }
         
         .sensor-info {
-            border: 2px solid #333;
+            /* border: 2px solid #333; */
             padding: 10px;
             margin: 20px;
             text-align: center;
             flex: 1;
-            height: 20rem;
+            height: 30rem;
+            width: 15rem;
+            border-radius: 0 0 800px 800px / 0 0 700px 700px;
+
+            
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            max-width: 22rem;
+            background-color: rgb(109, 155, 52);
         }       
         
         
         .temperature {
-            /* color: red; */
-            background-image: url("https://cdn.midjourney.com/e523ed77-0dcd-41d2-ab71-9884c97c4d96/0_2.png");
+            /* background-color: grey; */
+            /* background-image: url("https://cdn.midjourney.com/e523ed77-0dcd-41d2-ab71-9884c97c4d96/0_2.png"); */
             background-size: cover;
             background-position: center;
         }
         
         .moisture {
-            /* color: blue; */
-            background-image: url("https://cdn.midjourney.com/3068c732-2eca-44f0-9788-840b308629b4/0_3.png");
+            /* background-color: grey; */
+            /* background-image: url("https://cdn.midjourney.com/3068c732-2eca-44f0-9788-840b308629b4/0_3.png"); */
             background-size: cover;
             background-position: center;
         }
         
         .light {
-            /* color: yellow; */
-            background-image: url("https://cdn.midjourney.com/2764ece8-0ba3-4b54-aa1c-347c69d1f90a/0_3.png");
+            /* /* background-color: rgba(216, 216, 216, 0.637); */ 
+            /* background-image: url("https://cdn.midjourney.com/2764ece8-0ba3-4b54-aa1c-347c69d1f90a/0_3.png"); */
             background-size: cover;
             background-position: center;
         }
 
         .sensorContent {
-            
-            background-color: rgba(255, 255, 255, 0.7);
-            border-radius: 10px;
+            display: flex;
+            background-color: rgba(255, 255, 255, 1);
+            border-radius: 50%;
             margin: 1rem;
-            height: 80%;
             padding: 20px;
             display: flex;
             align-items: center;
+            justify-content: center;
             flex-direction: column;
+            width: 18rem;
+            height: 18rem;
+
+
+        }
+
+        .sensorText {
+            font-size: 5rem;
+        }
+
+        .sensor-info h2 {
+            margin-top: 0;
+            font-size: 2rem;
+        }
+
+        .sensorExtraContent {
+            display: none;
+            position: relative;
+            top: 20px;
+        }
+
+
+        .lightButton {
+            /* bold */
+            font-size: 1.5rem;
+            
+        }
+        .lightButton:hover {
+            
+            font-weight: 700;
+            /* background-color: rgb(202, 255, 195); */
+            color: rgb(109, 155, 52);
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
+    <header class="header">
+        <h1>Plant Communicator</h1>
+    </header>
     
-    <h1>Plant Communicator</h1>
-    <h2>Your plant:</h2>
-    <div class="container">
+<div class =descContainer>
+    <section id="description">
+        <p>The plant communicator will help take care of your plant's health. 
+            See how your plant is doing below!</p>
+    </section>
+</div>
+    <section id="status">
+        <h2>Plant status:</h2>
+        <p>Plant is <span id="plantStatus">alive</span></p>
+    </section>
+    <div class="sensorContainer">
+        
         <div class="sensor-info temperature">
+            
+            <h2>Temperature</h2>
+            
             <div class="sensorContent ">
-                <h2>Temperature</h2>
-                <p><span id="tempMarker">tempMarker °C</span></p>
-                <p>Mean: meanMarker °C</p>
-                <p>Below zero: zeroMarker</p>
+                <p><span id="tempMarker" class="sensorText"><!--tempMarker --> 24 °C</span></p>
+                <!-- <p>Mean: meanMarker °C</p>
+                <p>Below zero: zeroMarker</p> -->
             </div>
         </div>
         <div class="sensor-info moisture">
+            
+            <h2>Moisture</h2>
             <div class="sensorContent ">
-                <h2>Moisture</h2>
-                <p> <span id="moistureMarker">moistureMarker</span></p>
+                <p> <span id="moistureMarker" class="sensorText"><!--moistureMarker --> 36</span></p>     
             </div>
         </div>
         <div class="sensor-info light" >
+            
+            <h2>Light</h2>
             <div class="sensorContent">
-                <h2>Light</h2>
-                <p><span id="lightMarker">lightMarker</span></p>
-                <p>Sunny: sunnyMarker</p>
+                <p><span id="lightMarker" class="sensorText"> <!-- lightMarker--> 100</span></p>
+                <!-- <p>Sunny: sunnyMarker</p>
                 <p>Shade: shadeMarker</p>
-                <p>Darkness: darknessMarker</p>
-
+                <p>Darkness: darknessMarker</p> -->
+                <div onClick="lightButton()" class="lightButton">V</div>
+                <div class="sensorExtraContent" id="lightContent">
+                    <p>Sunny: </p>
+                    <p>Shade: </p>
+                    <p>Darkness: </p>
+                </div>
             </div>
         </div>
     </div>
@@ -98,9 +221,35 @@
     <script>
         const lightMarker = document.getElementById('lightMarker');
         const lightElement = document.querySelector('.light');
+        const lightValue = parseInt(lightMarker.innerText);
 
-        if (parseInt(lightMarker.innerText) > 30) {
+        let plantHealth;
+
+        if (lightValue < 30) {
         lightElement.style.backgroundImage = "url('https://cdn.midjourney.com/e0984457-606e-40d3-99a3-d5782eb5d6a9/0_2.png')";
+        }
+
+        
+
+        if (lightValue > 70) {
+        plantHealth = 'Excellent';
+        } else if (lightValue > 50) {
+        plantHealth = 'Good';
+        } else if (lightValue > 30) {
+        plantHealth = 'Fair';
+        } else {
+        plantHealth = 'Poor';
+        }
+
+        console.log(`The plant's health is ${plantHealth}.`);
+
+        function lightButton() {
+            var x = document.getElementById("lightContent");
+            if (x.style.display === "none") {
+            x.style.display = "block";
+            } else {
+            x.style.display = "none";
+            }
         }
     </script>
 </body>
