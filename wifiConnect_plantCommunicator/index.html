@@ -6,65 +6,114 @@
     <title>Plant Communicator</title>
     <style>
         body {
-            font-family: Arial, Helvetica, sans-serif, sans-serif;
-            text-align: center;
-            
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #F9FEF9;
             margin: 0;
-        }
-
-        h1 {
-            margin: 0;
-            padding: 1rem;
-            font-size: 2rem;
-            color: white;
+            margin-top: 50px;
         }
         
-
         .header {
+            width: 100%;
+            height: 50px;
+            margin: 0;
+            position: absolute;
+            background-color: #7FD277;
+            top: 0;
+        }
+
+        .header h1 {
+            margin: 0;
+            padding: 14px;
+            font-size: 1.3rem;
+            font-weight: 200;
+            color: rgb(0, 0, 0);
+        }
+
+        .row {
             display: flex;
-            background-color: rgb(109, 155, 52);
+            flex-wrap: wrap;
+            margin-left: 70px;
+            margin-right: 70px;
+        }
+
+        .column {
+            display: flex;
+            flex-wrap: wrap;
+            flex-direction: column;
+        }
+
+        .column.left {
+            flex: 0 1 45%;
+            margin-top: 40px;
+        }
+
+        .column.center {
+            flex: 0 1 20%;
+            margin-top: 40px;
+        }
+
+        .column.right {
+            flex: 0 1 35%;
+            margin-top: 40px;
         }
 
         .descContainer {
-            margin: 0;
-
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+            margin-bottom: 20px;
+            margin-right: 20px;
+            width: 100%;
+            background-color: #F8FB5F;
+            border-radius: 15px;
         }
 
-        #description {
-            padding: 1rem;
-            border: 2px solid #333;
-            
-            width: 50%;
-            margin-bottom: 2rem;
-            margin-top: 2rem;
-
-            border-radius: 50px;
-
+        .descContainer p {
+            margin: 20px;
+            font-weight: 200;
+            text-align: left;
         }
+
 
         #status {
-            padding: 1rem;
-            background-color: rgb(202, 255, 195);
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            justify-content: center;
-            width: 40%;
-            margin-left: 5%;
-
-            border-radius: 5px;
-
-            
+            background-color: #82B7B3;
+            width: 100%;
+            border-radius: 15px;
         }
         
-        #status h2 {
-            margin-top: 0;
+        #status h3 {
+            margin: 20px;
+            margin-bottom: 0;
             font-size: 1.2rem;
+            font-weight: 500;
+        }
 
+        #status p {
+            margin: 20px;
+            margin-top: 5px;
+        }
+
+        .fillerbox {
+            width: 70%;
+            margin-left: 15%;
+            height: 100%;
+            background-color: #82B7B3;
+            border-radius: 15px;
+        }
+
+        .fillerbox p {
+            margin: 20px;
+            font-weight: 200;
+            text-align: center;
+        }
+
+        .plantpicker {
+            width: 100%;
+            background-color: #F8FB5F;
+            border-radius: 15px;
+        }
+
+        .plantpicker p {
+            margin: 20px;
+            font-weight: 200;
+            text-align: left;
         }
 
         .sensorContainer {
@@ -74,9 +123,6 @@
             align-items: center;
             margin: 20px;
             padding: 20px;
-
-            
-            
         }
         
         .sensor-info {
@@ -164,6 +210,7 @@
             color: rgb(109, 155, 52);
             cursor: pointer;
         }
+
     </style>
 </head>
 <body>
@@ -171,23 +218,41 @@
         <h1>Plant Communicator</h1>
     </header>
     
-<div class =descContainer>
-    <section id="description">
-        <p>The plant communicator will help take care of your plant's health. 
+    <div class="row">
+    <div class="column left">
+    <div class="descContainer">
+        <p>The plant communicator will help take care of your plant's health.
+            <br> <br> 
             See how your plant is doing below!</p>
-    </section>
-</div>
-    <section id="status">
-        <h2>Plant status:</h2>
+    </div>
+
+    <div id="status">
+        <h3>Plant status</h3>
         <p>Plant is <span id="plantStatus">alive</span></p>
-    </section>
+    </div>
+    </div>
+    
+
+    <div class="column center">
+        <div class="fillerbox">
+            <p>hallo</p>
+        </div>
+    </div>
+
+    <div class="column right">
+        <div class="plantpicker">
+            <p>Choose your plant here</p>
+        </div>
+    </div>
+    </div>
+
+    <div class="row">
     <div class="sensorContainer">
-        
         <div class="sensor-info temperature">
             
             <h2>Temperature</h2>
             
-            <div class="sensorContent ">
+            <div class="sensorContent">
                 <p><span id="tempMarker" class="sensorText"><!--tempMarker --> 24 °C</span></p>
                 <!-- <p>Mean: meanMarker °C</p>
                 <p>Below zero: zeroMarker</p> -->
@@ -216,6 +281,7 @@
                 </div>
             </div>
         </div>
+    </div>
     </div>
 
     <script>
