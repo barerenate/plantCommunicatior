@@ -121,11 +121,14 @@ void loop() {
   // calculate the average temperature 
   double mean = addedTemp/counter;
 
-  //current light level from sensor
+  // current light level from sensor
   int currentLight = getLightLevel();
 
-  //current temp
+  // current temp
   int currentTemp = getTemp();
+
+  // current moist
+  int currentmMoist = getMoisture();
 
 
 
@@ -138,28 +141,22 @@ void loop() {
   //check how many minutes the different light levels exist   
 
   //List of sunny Values
-  double sunnyMin = sunnyValues.size();
+  double sunnyMin = sunnyValues.size()/60;
   //List of shade Values
-  double shadowMin = shadowValues.size();
+  double shadowMin = shadowValues.size()/60;
   //List of dark Values
-  double darkMin = darkValues.size();
+  double darkMin = darkValues.size()/60;
 
-    //float temphtml = getTemp();
-    int moisthtml = getMoisture();
-    //int lighthtml = getLightLevel();
-
-    // getMoisture() = currentMoisture;
-    // String moistureCheck = checkMoistThresh(currentMoisture);
-
+    
     String html = String(INDEX_HTML);
     html.replace("lightMarker", String(currentLight));
     html.replace("sunnyMarker", String(sunnyMin));
     html.replace("shadeMarker", String(shadowMin));
     html.replace("darknessMarker", String(darkMin));
-    html.replace("moistureMarker", String(moisthtml));
+    html.replace("moistureMarker", String(currentmMoist));
     html.replace("tempMarker", String(currentTemp));
     html.replace("meanMarker", String(mean));
-    html.replace("timeMarker", String(counter)); //this also needs to be added to the website, gives you the amount of seconds the programm has been running
+    html.replace("timeMarker", String(counter)); 
     client.println(html);
     client.flush();
 
