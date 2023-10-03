@@ -14,7 +14,7 @@
         
         .header {
             width: 100%;
-            height: 50px;
+            height: 55px;
             margin: 0;
             position: absolute;
             background-color: #7FD277;
@@ -23,7 +23,7 @@
 
         .header h1 {
             margin: 0;
-            padding: 14px;
+            padding: 16px;
             font-size: 1.3rem;
             font-weight: 200;
             color: rgb(0, 0, 0);
@@ -34,47 +34,30 @@
             flex-wrap: wrap;
             margin-left: 70px;
             margin-right: 70px;
+            gap: 40px;
         }
 
         .column {
             display: flex;
             flex-wrap: wrap;
             flex-direction: column;
-        }
-
-        .column.left {
-            flex: 0 1 45%;
             margin-top: 40px;
+            flex: 1;
         }
 
-        .column.center {
-            flex: 0 1 20%;
-            margin-top: 40px;
-        }
-
-        .column.right {
-            flex: 0 1 35%;
-            margin-top: 40px;
-        }
-
-        .descContainer {
-            margin-bottom: 20px;
-            margin-right: 20px;
-            width: 100%;
+        .desc {
             background-color: #F8FB5F;
             border-radius: 15px;
         }
 
-        .descContainer p {
+        .desc p {
             margin: 20px;
             font-weight: 200;
             text-align: left;
         }
 
-
         #status {
             background-color: #82B7B3;
-            width: 100%;
             border-radius: 15px;
         }
         
@@ -89,108 +72,60 @@
             margin: 20px;
             margin-top: 5px;
         }
+        
+        .sensor-info {
+            text-align: center;
+            height: 350px;
+            width: 250px;
+            border-radius: 0 0 800px 800px / 0 0 700px 700px;
+            background-color: rgb(109, 155, 52);
+        }
 
-        .fillerbox {
-            width: 70%;
-            margin-left: 15%;
-            height: 100%;
+        .sensor-info h2 {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 300;
+        }
+
+        .sensorContent {
+            margin-left: 25px;
+            margin-top: 50px;
+            width: 200px;
+            height: 200px;
+            background-color: rgba(255, 255, 255, 1);
+            border-radius: 50%;
+        }
+
+        .sensorContent p {
+            font-size: 3.5rem;
+            text-align: center;
+            font-weight: 500;
+            padding-top: 67px;
+            margin: 0;
+        }
+        
+        .averages {
+            height: 300px;
+            width: 250px;
             background-color: #82B7B3;
             border-radius: 15px;
         }
 
-        .fillerbox p {
-            margin: 20px;
-            font-weight: 200;
-            text-align: center;
+        .averages h4 {
+            margin: 20px 20px 0 20px;
+            font-size: 1rem;
+            font-weight: 400;
         }
 
-        .plantpicker {
-            width: 100%;
-            background-color: #F8FB5F;
-            border-radius: 15px;
-        }
-
-        .plantpicker p {
-            margin: 20px;
-            font-weight: 200;
-            text-align: left;
-        }
-
-        .sensorContainer {
-            display: flex;
-            flex-wrap: wrap;
+        .averages p {
+            margin: 5px 0 0 100px;
             justify-content: center;
-            align-items: center;
-            margin: 20px;
-            padding: 20px;
+            width: 50px;
+            height: 50px;
+            background-color: #F9FEF9;
+            border-radius: 360px;
         }
         
-        .sensor-info {
-            /* border: 2px solid #333; */
-            padding: 10px;
-            margin: 20px;
-            text-align: center;
-            flex: 1;
-            height: 30rem;
-            width: 15rem;
-            border-radius: 0 0 800px 800px / 0 0 700px 700px;
-
-            
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            align-items: center;
-            max-width: 22rem;
-            background-color: rgb(109, 155, 52);
-        }       
-        
-        
-        .temperature {
-            /* background-color: grey; */
-            /* background-image: url("https://cdn.midjourney.com/e523ed77-0dcd-41d2-ab71-9884c97c4d96/0_2.png"); */
-            background-size: cover;
-            background-position: center;
-        }
-        
-        .moisture {
-            /* background-color: grey; */
-            /* background-image: url("https://cdn.midjourney.com/3068c732-2eca-44f0-9788-840b308629b4/0_3.png"); */
-            background-size: cover;
-            background-position: center;
-        }
-        
-        .light {
-            /* /* background-color: rgba(216, 216, 216, 0.637); */ 
-            /* background-image: url("https://cdn.midjourney.com/2764ece8-0ba3-4b54-aa1c-347c69d1f90a/0_3.png"); */
-            background-size: cover;
-            background-position: center;
-        }
-
-        .sensorContent {
-            display: flex;
-            background-color: rgba(255, 255, 255, 1);
-            border-radius: 50%;
-            margin: 1rem;
-            padding: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            width: 18rem;
-            height: 18rem;
-
-
-        }
-
-        .sensorText {
-            font-size: 5rem;
-        }
-
-        .sensor-info h2 {
-            margin-top: 0;
-            font-size: 2rem;
-        }
-
         .sensorExtraContent {
             display: none;
             position: relative;
@@ -219,54 +154,42 @@
     </header>
     
     <div class="row">
-    <div class="column left">
-    <div class="descContainer">
-        <p>The plant communicator will help take care of your plant's health.
-            <br> <br> 
-            See how your plant is doing below!</p>
-    </div>
-
-    <div id="status">
-        <h3>Plant status</h3>
-        <p>Plant is <span id="plantStatus">alive</span></p>
-    </div>
-    </div>
-    
-
-    <div class="column center">
-        <div class="fillerbox">
-            <p>hallo</p>
+    <div class="column">
+        <div id="status">
+            <h3>Plant status</h3>
+            <p>Plant is <span id="plantStatus">alive</span></p>
         </div>
     </div>
-
-    <div class="column right">
-        <div class="plantpicker">
-            <p>Choose your plant here</p>
+    <div class="column">
+        <div class="desc">
+            <p>The plant communicator will help take care of your plant's health.
+                <br> <br> 
+            See how your plant is doing below!</p>
         </div>
     </div>
     </div>
 
     <div class="row">
-    <div class="sensorContainer">
-        <div class="sensor-info temperature">
-            
+    <div class="column">
+        <div class="sensor-info">
             <h2>Temperature</h2>
-            
             <div class="sensorContent">
                 <p><span id="tempMarker" class="sensorText"><!--tempMarker --> 24 °C</span></p>
                 <!-- <p>Mean: meanMarker °C</p>
                 <p>Below zero: zeroMarker</p> -->
             </div>
         </div>
-        <div class="sensor-info moisture">
-            
+    </div>
+    <div class="column">
+        <div class="sensor-info">
             <h2>Moisture</h2>
             <div class="sensorContent ">
                 <p> <span id="moistureMarker" class="sensorText"><!--moistureMarker --> 36</span></p>     
             </div>
         </div>
-        <div class="sensor-info light" >
-            
+    </div>
+    <div class="column">
+        <div class="sensor-info"> 
             <h2>Light</h2>
             <div class="sensorContent">
                 <p><span id="lightMarker" class="sensorText"> <!-- lightMarker--> 100</span></p>
@@ -280,6 +203,16 @@
                     <p>Darkness: </p>
                 </div>
             </div>
+        </div>
+    </div>
+    <div class="column">
+        <div class="averages">
+            <h4>Average temperature</h4>
+            <p> 25 C</p>
+            <h4>Average moisture level</h4>
+            <p>30</p>
+            <h4>Average light level</h4>
+            <p>100</p>
         </div>
     </div>
     </div>
