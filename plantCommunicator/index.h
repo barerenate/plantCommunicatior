@@ -1,5 +1,5 @@
 const char *INDEX_HTML = R"=====(
-      <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -7,104 +7,242 @@ const char *INDEX_HTML = R"=====(
     <title>Plant Communicator</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            text-align: center;
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #F9FEF9;
+            margin: 0;
+            margin-top: 50px;
         }
         
-        .container {
+        .header {
+            width: 100%;
+            height: 55px;
+            margin: 0;
+            position: absolute;
+            background-color: #7FD277;
+            top: 0;
+        }
+
+        .header h1 {
+            margin: 0;
+            padding: 16px;
+            font-size: 1.3rem;
+            font-weight: 200;
+        }
+
+        .row {
             display: flex;
             flex-wrap: wrap;
-            justify-content: center;
-            align-items: center;
+            margin-left: 70px;
+            margin-right: 70px;
+            gap: 40px;
+        }
+
+        .column {
+            display: flex;
+            flex-wrap: wrap;
+            flex-direction: column;
+            margin-top: 40px;
+            flex: 1;
+        }
+
+        .desc {
+            background-color: #F8FB5F;
+            border-radius: 15px;
+        }
+
+        .desc p {
             margin: 20px;
-            padding: 20px;
-            
+            font-weight: 200;
+            text-align: left;
+        }
+
+        #status {
+            background-color: #82B7B3;
+            border-radius: 15px;
+        }
+        
+        #status h3 {
+            margin: 20px;
+            margin-bottom: 5px;
+            font-size: 1.2rem;
+            font-weight: 500;
+        }
+
+        #status p {
+            margin: 20px;
+            margin-top: 5px;
         }
         
         .sensor-info {
-            border: 2px solid #333;
-            padding: 10px;
-            margin: 20px;
             text-align: center;
-            flex: 1;
-            height: 20rem;
-        }       
-        
-        
-        .temperature {
-            /* color: red; */
-            background-image: url("https://cdn.midjourney.com/e523ed77-0dcd-41d2-ab71-9884c97c4d96/0_2.png");
-            background-size: cover;
-            background-position: center;
+            height: 350px;
+            width: 250px;
+            border-radius: 0 0 800px 800px / 0 0 700px 700px;
+            background-color: #7FD277;
         }
-        
-        .moisture {
-            /* color: blue; */
-            background-image: url("https://cdn.midjourney.com/3068c732-2eca-44f0-9788-840b308629b4/0_3.png");
-            background-size: cover;
-            background-position: center;
-        }
-        
-        .light {
-            /* color: yellow; */
-            background-image: url("https://cdn.midjourney.com/2764ece8-0ba3-4b54-aa1c-347c69d1f90a/0_3.png");
-            background-size: cover;
-            background-position: center;
+
+        .sensor-info h2 {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 300;
         }
 
         .sensorContent {
-            
-            background-color: rgba(255, 255, 255, 0.7);
-            border-radius: 10px;
-            margin: 1rem;
-            height: 80%;
-            padding: 20px;
-            display: flex;
-            align-items: center;
-            flex-direction: column;
+            margin-left: 25px;
+            margin-top: 50px;
+            width: 200px;
+            height: 200px;
+            background-color: rgba(255, 255, 255, 1);
+            border-radius: 50%;
         }
+
+        .sensorContent p {
+            font-size: 3.5rem;
+            text-align: center;
+            font-weight: 500;
+            padding-top: 67px;
+            margin: 0;
+        }
+        
+        .averages {
+            height: 320px;
+            width: 250px;
+            background-color: #82B7B3;
+            border-radius: 15px;
+        }
+
+        .averages h4 {
+            text-align: center;
+            margin: 20px 20px 0 20px;
+            font-size: 1rem;
+            font-weight: 400;
+        }
+
+        .averages p {
+            margin: 10px 0 0 100px;
+            line-height: 50px;
+            text-align: center;
+            width: 50px;
+            height: 50px;
+            background-color: #F9FEF9;
+            border-radius: 360px;
+        }
+        
+        .sensorExtraContent {
+            display: none;
+            position: relative;
+            top: 20px;
+        }
+
+
+        .lightButton {
+            /* bold */
+            font-size: 1.5rem;
+            
+        }
+        .lightButton:hover {
+            
+            font-weight: 700;
+            /* background-color: rgb(202, 255, 195); */
+            color: rgb(109, 155, 52);
+            cursor: pointer;
+        }
+
     </style>
 </head>
 <body>
+    <header class="header">
+        <h1>Plant Communicator</h1>
+    </header>
     
-    <h1>Plant Communicator</h1>
-    <h2>Your plant:</h2>
-    <div class="container">
-        <div class="sensor-info temperature">
-            <div class="sensorContent ">
-                <h2>Temperature</h2>
-                <p><span id="tempMarker">tempMarker °C</span></p>
-                <p>Mean: meanMarker °C</p>
-                <p>Below zero: zeroMarker</p>
-            </div>
+    <div class="row">
+    <div class="column">
+        <div id="status">
+            <h3>Plant status</h3>
+            <p>Plant is <span id="plantStatus">alive</span></p>
+            <p>wateringStatus</p>
         </div>
-        <div class="sensor-info moisture">
-            <div class="sensorContent ">
-                <h2>Moisture</h2>
-                <p> <span id="moistureMarker">moistureMarker</span></p>     
-            </div>
+    </div>
+    <div class="column">
+        <div class="desc">
+            <p>The plant communicator will help take care of your plant's health.
+                <br> <br> 
+            See how your plant is doing below!</p>
         </div>
-        <div class="sensor-info light" >
-            <div class="sensorContent">
-                <h2>Light</h2>
-                <p><span id="lightMarker">lightMarker</span></p>
-                <p>Sunny: sunnyMarker</p>
-                <p>Shade: shadeMarker</p>
-                <p>Darkness: darknessMarker</p>
+    </div>
+    </div>
 
+    <div class="row">
+    <div class="column">
+        <div class="sensor-info">
+            <h2>Temperature</h2>
+            <div class="sensorContent">
+                <p>tempMarker °C</p>
             </div>
         </div>
+    </div>
+    <div class="column">
+        <div class="sensor-info">
+            <h2>Moisture</h2>
+            <div class="sensorContent">
+                <p>moistureMarker</p>     
+            </div>
+        </div>
+    </div>
+    <div class="column">
+        <div class="sensor-info"> 
+            <h2>Light</h2>
+            <div class="sensorContent">
+                <p>lightMarker</p>
+            </div>
+        </div>
+    </div>
+    <div class="column">
+        <div class="averages">
+            <h4>Average temperature</h4>
+            <p>meanMarker °C</p>
+            <h4>Average moisture level</h4>
+            <p>30</p>
+            <h4>Average light level</h4>
+            <p>100</p>
+        </div>
+    </div>
     </div>
 
     <script>
         const lightMarker = document.getElementById('lightMarker');
         const lightElement = document.querySelector('.light');
+        const lightValue = parseInt(lightMarker.innerText);
 
-        if (parseInt(lightMarker.innerText) > 30) {
+        let plantHealth;
+
+        if (lightValue < 30) {
         lightElement.style.backgroundImage = "url('https://cdn.midjourney.com/e0984457-606e-40d3-99a3-d5782eb5d6a9/0_2.png')";
+        }
+
+        
+
+        if (lightValue > 70) {
+        plantHealth = 'Excellent';
+        } else if (lightValue > 50) {
+        plantHealth = 'Good';
+        } else if (lightValue > 30) {
+        plantHealth = 'Fair';
+        } else {
+        plantHealth = 'Poor';
+        }
+
+        console.log(`The plant's health is ${plantHealth}.`);
+
+        function lightButton() {
+            var x = document.getElementById("lightContent");
+            if (x.style.display === "none") {
+            x.style.display = "block";
+            } else {
+            x.style.display = "none";
+            }
         }
     </script>
 </body>
 </html>
-
       )=====";
