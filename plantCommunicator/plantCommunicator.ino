@@ -1,38 +1,186 @@
-int moistureSensor = A2;
-int lightSensor = A3;
-int tempSensor = A0; //This is the Arduino Pin that will read the sensor output
-int tempInput; //The variable we will use to store the sensor input
-double temp; //The variable we will use to store temperature in degrees.
+#include "WiFiS3.h"
+#include "index.h"
+#include "ArrayList.h"
+
+char ssid[] = "AndroidAP";        // your network SSID (name)
+char pass[] = "glye5160";    // your network password
+
+int status = WL_IDLE_STATUS;
+WiFiServer server(80);
+
+int tempPin = A0;
+int moistPin = A2;
+int lightPin = A3;
+
+ArrayList<double> lightValues; //arraylist to store light sensor data
+double addedTemp = 0; //add Temperature on top of each other
+bool belowZero = false;
+int threshold = 800; // varible to check if moisture is higher
+int counter = 0;
+
+float getTemp() {
+  int tempRead = analogRead(tempPin); //read the analog sensor and store it
+  float voltage = tempRead * (5.0 / 1024.0);
+  float temp = (voltage - 0.5) * 100; //Convert to degrees
+  return temp;
+}
+
+int getMoisture() {
+  int moistRead = analogRead(moistPin);
+  int moisture = map(moistRead, 0, 1023, 0, 100);
+  return moisture;
+}
+
+String checkMoistThresh(int x) {
+  int moisture = x;
+  int moistThreshold = 10;
+
+  if (moisture < moistThreshold)
+    return "Plant needs water";
+  else
+   return "Plant is happy :)";
+
+}
+
+int getLightLevel() {
+  int lightRead = analogRead(lightPin);
+  int light = map(lightRead, 0, 1023, 0, 100);
+  return light;
+}
 
 void setup() {
   Serial.begin(9600);
+  // check for the WiFi module:
+  if (WiFi.status() == WL_NO_MODULE) {
+    Serial.println("Communication with WiFi module failed!");
+    // don't continue
+    while (true);
+  }
+
+  String fv = WiFi.firmwareVersion();
+  if (fv < WIFI_FIRMWARE_LATEST_VERSION) {
+    Serial.println("Please upgrade the firmware");
+  }
+
+  // attempt to connect to WiFi network:
+  while (status != WL_CONNECTED) {
+    Serial.print("Attempting to connect to Network named: ");
+    Serial.println(ssid);
+
+    status = WiFi.begin(ssid, pass);
+
+    delay(1000);
+  }
+  server.begin(); // start the web server on port 80
+  printWifiStatus(); // you're connected now, so print out the status
 }
 
 void loop() {
-  int rawMoistValue = analogRead(moistureSensor);
-  int moisture = map(rawMoistValue, 0, 1023, 0, 100);
-
-  tempInput = analogRead(A0); //read the analog sensor and store it
-  temp = (double)tempInput / 1024; //find percentage of input reading
-  temp = temp * 5; //multiply by 5V to get voltage
-  temp = temp - 0.5; //Subtract the offset
-  temp = temp * 100; //Convert to degrees
-
-  // Read raw data form phototransistor
-  int rawLightValue = analogRead(lightSensor);
-  // Change value range from 0-1023 (standard for analog read) to 0-100
-  int light = map(rawLightValue, 0, 1023, 0, 100);
-  // Display value in Serial Monitor
-  
   Serial.println("-----------------------");
   Serial.print("Current Temperature: ");
-  Serial.println(temp);
+  Serial.println(getTemp());
 
   Serial.print("Light level: ");
-  Serial.println(light);
+  Serial.println(getLightLevel());
 
   Serial.print("Moisture: ");
-  Serial.println(moisture);
+  Serial.println(getMoisture());
 
-  delay(3000);
+  //storing the light sensore data in the arrayList
+  lightValues.add(getLightLevel());
+  //i = i + 1;
+
+  //measures every second
+  delay(1000);
+
+  addedTemp = addedTemp + getTemp();
+
+  counter++;
+  // listen for incoming clients
+  WiFiClient client = server.available();
+  if (client) {
+    // read the HTTP request header line by line
+    while (client.connected()) {
+      if (client.available()) {
+        String HTTP_header = client.readStringUntil('\n');  // read the header line of HTTP request
+
+        if (HTTP_header.equals("\r"))  // the end of HTTP request
+          break;
+
+        Serial.print("<< ");
+        Serial.println(HTTP_header);  // print HTTP request to Serial Monitor
+      }
+    }
+
+    client.println("HTTP/1.1 200 OK");
+    client.println("Content-Type: text/html");
+    client.println("Connection: close");  // the connection will be closed after completion of the response
+    client.println();                     // the separator between HTTP header and body
+
+
+  // calculate the average temperature 
+  double mean = addedTemp/counter;
+
+  // current light level from sensor
+  int currentLight = getLightLevel();
+
+  // current temp
+  int currentTemp = getTemp();
+
+  // current moist
+  int currentmMoist = getMoisture();
+
+
+
+  //sort initial arrayList into three categories (sunny, bright/cloudy/shadow, dark)
+  //Values still need to be corrected
+  ArrayList<double> sunnyValues = lightValues.filter([](double n) -> bool{return n > 98;});
+  ArrayList<double> shadowValues = lightValues.filter([](double n) -> bool{return n > 5 && n < 99;});
+  ArrayList<double> darkValues = lightValues.filter([](double n) -> bool{return n < 5;});
+
+  //check how many minutes the different light levels exist   
+
+  //List of sunny Values
+  double sunnyMin = sunnyValues.size()/60;
+  //List of shade Values
+  double shadowMin = shadowValues.size()/60;
+  //List of dark Values
+  double darkMin = darkValues.size()/60;
+
+    
+    String html = String(INDEX_HTML);
+    html.replace("lightMarker", String(currentLight));
+    html.replace("sunnyMarker", String(sunnyMin));
+    html.replace("shadeMarker", String(shadowMin));
+    html.replace("darknessMarker", String(darkMin));
+    html.replace("moistureMarker", String(currentmMoist));
+    html.replace("tempMarker", String(currentTemp));
+    html.replace("meanMarker", String(mean));
+    html.replace("timeMarker", String(counter)); 
+    client.println(html);
+    client.flush();
+
+    // give the web browser time to receive the data
+    delay(10); 
+
+    // close the connection:
+    client.stop();
+  }
+}
+
+void printWifiStatus() {
+  // print the SSID of the network you're attached to:
+  Serial.print("SSID: ");
+  Serial.println(WiFi.SSID());
+
+  // print your board's IP address:
+  IPAddress ip = WiFi.localIP();
+  Serial.print("IP Address: ");
+  Serial.println(ip);
+
+  // print the received signal strength:
+  long rssi = WiFi.RSSI();
+  Serial.print("signal strength (RSSI):");
+  Serial.print(rssi);
+  Serial.println(" dBm");
 }
