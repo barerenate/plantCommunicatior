@@ -2,21 +2,19 @@
 #include "index.h"
 #include "ArrayList.h"
 
-char ssid[] = "Renate";        // your network SSID (name)
-char pass[] = "hello123";    // your network password
+char ssid[] = "AndroidAP";        // your network SSID (name)
+char pass[] = "glye5160";    // your network password
 
 int status = WL_IDLE_STATUS;
 WiFiServer server(80);
 
+ArrayList<double> lightValues; //arraylist to store light sensor data
+double addedTemp = 0; //add Temperature on top of each other
+int counter = 0;
+
 int tempPin = A0;
 int moistPin = A2;
 int lightPin = A3;
-
-ArrayList<double> lightValues; //arraylist to store light sensor data
-double addedTemp = 0; //add Temperature on top of each other
-bool belowZero = false;
-int threshold = 80; // varible to check if moisture is higher
-int counter = 0;
 
 float getTemp() {
   int tempRead = analogRead(tempPin); //read the analog sensor and store it
@@ -31,6 +29,12 @@ int getMoisture() {
   return moisture;
 }
 
+int getLightLevel() {
+  int lightRead = analogRead(lightPin);
+  int light = map(lightRead, 0, 1023, 0, 100);
+  return light;
+}
+
 String checkMoistThresh(int x) {
   int moisture = x;
   int moistThreshold = 10;
@@ -38,15 +42,10 @@ String checkMoistThresh(int x) {
   if (moisture < moistThreshold)
     return "Plant needs water";
   else
-   return "Plant has enough water";
+   return "Plant is happy :)";
 
 }
 
-int getLightLevel() {
-  int lightRead = analogRead(lightPin);
-  int light = map(lightRead, 0, 1023, 0, 100);
-  return light;
-}
 
 void setup() {
   Serial.begin(9600);
@@ -75,23 +74,23 @@ void setup() {
   printWifiStatus(); // you're connected now, so print out the status
 }
 
+
 void loop() {
-  // Serial.println("-----------------------");
-  // Serial.print("Current Temperature: ");
-  // Serial.println(getTemp());
+  Serial.println("-----------------------");
+  Serial.print("Current Temperature: ");
+  Serial.println(getTemp());
 
-  // Serial.print("Light level: ");
-  // Serial.println(getLightLevel());
+  Serial.print("Light level: ");
+  Serial.println(getLightLevel());
 
-  // Serial.print("Moisture: ");
-  // Serial.println(getMoisture());
+  Serial.print("Moisture: ");
+  Serial.println(getMoisture());
 
-  // //storing the light sensore data in the arrayList
-  // lightValues.add(getLightLevel());
-  // //i = i + 1;
+  //storing the light sensor data in the arrayList
+  lightValues.add(getLightLevel());
 
-  // //measures every second
-  // delay(1000);
+  //measures every second
+  delay(1000);
 
   addedTemp = addedTemp + getTemp();
 
@@ -119,15 +118,20 @@ void loop() {
 
 
   // calculate the average temperature 
-  double meanTemp = addedTemp/counter;
+  double mean = addedTemp/counter;
+
   // current light level from sensor
   int currentLight = getLightLevel();
+
   // current temp
   int currentTemp = getTemp();
+
   // current moist
   int currentMoist = getMoisture();
 
-  String watering = checkMoistThresh(currentMoist);
+  // calling the warning message 
+  checkMoistThresh(currentMoist);
+
 
 
   //sort initial arrayList into three categories (sunny, bright/cloudy/shadow, dark)
@@ -153,9 +157,8 @@ void loop() {
     html.replace("darknessMarker", String(darkMin));
     html.replace("moistureMarker", String(currentMoist));
     html.replace("tempMarker", String(currentTemp));
-    html.replace("meanMarker", String(meanTemp));
+    html.replace("meanMarker", String(mean));
     html.replace("timeMarker", String(counter)); 
-    html.replace("wateringStatus", String(watering));
     client.println(html);
     client.flush();
 
