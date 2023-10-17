@@ -12,15 +12,15 @@ int tempPin = A0;
 int moistPin = A2;
 int lightPin = A3;
 
-ArrayList<double> lightValues; //arraylist to store light sensor data
-double addedTemp = 0; //add Temperature on top of each other
+ArrayList<int> lightValues; //arraylist to store light sensor data
+int addedTemp = 0; //add Temperature on top of each other
 bool belowZero = false;
 int threshold = 80; // varible to check if moisture is higher
 int counter = 0;
 
-float getTemp() {
+int getTemp() {
   int tempRead = analogRead(tempPin); //read the analog sensor and store it
-  float voltage = tempRead * (5.0 / 1024.0);
+  float voltage = tempRead * (4.1 / 1024.0);
   float temp = (voltage - 0.5) * 100; //Convert to degrees
   return temp;
 }
@@ -76,26 +76,26 @@ void setup() {
 }
 
 void loop() {
-  // Serial.println("-----------------------");
-  // Serial.print("Current Temperature: ");
-  // Serial.println(getTemp());
+  Serial.println("-----------------------");
+  Serial.print("Current Temperature: ");
+  Serial.println(getTemp());
 
-  // Serial.print("Light level: ");
-  // Serial.println(getLightLevel());
+  Serial.print("Light level: ");
+  Serial.println(getLightLevel());
 
-  // Serial.print("Moisture: ");
-  // Serial.println(getMoisture());
+  Serial.print("Moisture: ");
+  Serial.println(getMoisture());
 
-  // //storing the light sensore data in the arrayList
-  // lightValues.add(getLightLevel());
-  // //i = i + 1;
+  //storing the light sensore data in the arrayList
+  lightValues.add(getLightLevel());
+  //i = i + 1;
 
-  // //measures every second
-  // delay(1000);
+  //measures every second
+  delay(1000);
 
   addedTemp = addedTemp + getTemp();
-
   counter++;
+
   // listen for incoming clients
   WiFiClient client = server.available();
   if (client) {
@@ -119,7 +119,7 @@ void loop() {
 
 
   // calculate the average temperature 
-  double meanTemp = addedTemp/counter;
+  int meanTemp = addedTemp/counter;
   // current light level from sensor
   int currentLight = getLightLevel();
   // current temp
@@ -132,18 +132,18 @@ void loop() {
 
   //sort initial arrayList into three categories (sunny, bright/cloudy/shadow, dark)
   //Values still need to be corrected
-  ArrayList<double> sunnyValues = lightValues.filter([](double n) -> bool{return n > 98;});
-  ArrayList<double> shadowValues = lightValues.filter([](double n) -> bool{return n > 5 && n < 99;});
-  ArrayList<double> darkValues = lightValues.filter([](double n) -> bool{return n < 5;});
+  ArrayList<int> sunnyValues = lightValues.filter([](int n) -> bool{return n > 94;});
+  ArrayList<int> shadowValues = lightValues.filter([](int n) -> bool{return n > 5 && n < 95;});
+  ArrayList<int> darkValues = lightValues.filter([](int n) -> bool{return n < 5;});
 
   //check how many minutes the different light levels exist   
 
   //List of sunny Values
-  double sunnyMin = sunnyValues.size()/60;
+  int sunnyMin = sunnyValues.size()/60;
   //List of shade Values
-  double shadowMin = shadowValues.size()/60;
+  int shadowMin = shadowValues.size()/60;
   //List of dark Values
-  double darkMin = darkValues.size()/60;
+  int darkMin = darkValues.size()/60;
 
     
     String html = String(INDEX_HTML);
