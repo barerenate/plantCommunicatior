@@ -202,11 +202,11 @@ const char *INDEX_HTML = R"=====(
     <div class="column">
         <div class="averages">
             <h4>Average temperature</h4>
-            <p>meanMarker °C</p>
+            <p>meanTempMarker °C</p>
             <h4>Average moisture level</h4>
-            <p>30</p>
+            <p>meanMoistMarker</p>
             <h4>Average light level</h4>
-            <p>100</p>
+            <p>meanLightMarker</p>
         </div>
     </div>
     </div>
