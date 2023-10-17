@@ -169,8 +169,8 @@ void loop() {
     html.replace("moistureMarker", String(currentMoist));
     html.replace("tempMarker", String(currentTemp));
     html.replace("meanTempMarker", String(meanTemp)); 
-    html.replace("meanTempMarker", String(meanLight)); 
-    html.replace("meanTempMarker", String(meanMoist)); 
+    html.replace("meanLightMarker", String(meanLight)); 
+    html.replace("meanMoistMarker", String(meanMoist)); 
     html.replace("timeMarker", String(counter)); 
     client.println(html);
     client.flush();
