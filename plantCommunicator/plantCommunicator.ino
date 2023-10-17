@@ -2,8 +2,8 @@
 #include "index.h"
 #include "ArrayList.h"
 
-char ssid[] = "AndroidAP";        // your network SSID (name)
-char pass[] = "glye5160";    // your network password
+char ssid[] = "Renate";        // your network SSID (name)
+char pass[] = "hello123";    // your network password
 
 int status = WL_IDLE_STATUS;
 WiFiServer server(80);
@@ -18,7 +18,7 @@ int counter = 0;
 
 int getTemp() {
   int tempRead = analogRead(tempPin); //read the analog sensor and store it
-  float voltage = tempRead * (4.1 / 1024.0);
+  float voltage = tempRead * (3.1 / 1024.0);
   float temp = (voltage - 0.5) * 100; //Convert to degrees
   return temp;
 }
@@ -130,7 +130,7 @@ void loop() {
   int currentMoist = getMoisture();
 
   // calling the warning message 
-  checkMoistThresh(currentMoist);
+  String wateringStatus = checkMoistThresh(currentMoist);
 
 
 
@@ -156,8 +156,9 @@ void loop() {
     html.replace("shadeMarker", String(shadowMin));
     html.replace("darknessMarker", String(darkMin));
     html.replace("moistureMarker", String(currentMoist));
+    html.replace("wateringStatus", String(wateringStatus));
     html.replace("tempMarker", String(currentTemp));
-    html.replace("meanMarker", String(mean));
+    html.replace("meanMarker", String(meanTemp));
     html.replace("timeMarker", String(counter)); 
     client.println(html);
     client.flush();

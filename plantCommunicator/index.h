@@ -159,7 +159,6 @@ const char *INDEX_HTML = R"=====(
     <div class="column">
         <div id="status">
             <h3>Plant status</h3>
-            <p>Plant is <span id="plantStatus">alive</span></p>
             <p>wateringStatus</p>
             <p>The plant has been in the sun for sunnyMarker minutes</p>
             <p>The plant has been in the shade for shadeMarker minutes</p>
