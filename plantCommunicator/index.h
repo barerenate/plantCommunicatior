@@ -159,7 +159,6 @@ const char *INDEX_HTML = R"=====(
     <div class="column">
         <div id="status">
             <h3>Plant status</h3>
-            <p>Plant is <span id="plantStatus">alive</span></p>
             <p>wateringStatus</p>
             <p>The plant has been in the sun for sunnyMarker minutes</p>
             <p>The plant has been in the shade for shadeMarker minutes</p>
@@ -203,11 +202,11 @@ const char *INDEX_HTML = R"=====(
     <div class="column">
         <div class="averages">
             <h4>Average temperature</h4>
-            <p>meanMarker °C</p>
+            <p>meanTempMarker °C</p>
             <h4>Average moisture level</h4>
-            <p>30</p>
+            <p>meanMoistMarker</p>
             <h4>Average light level</h4>
-            <p>100</p>
+            <p>meanLightMarker</p>
         </div>
     </div>
     </div>
