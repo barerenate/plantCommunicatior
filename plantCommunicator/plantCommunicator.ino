@@ -13,7 +13,9 @@ int moistPin = A2;
 int lightPin = A3;
 
 ArrayList<int> lightValues; //arraylist to store light sensor data
-int addedTemp = 0; //add Temperature on top of each other
+int addedTemp = 0; //add temperature on top of each other
+int addedLight = 0; //add light levels on top of each other
+int addedMoist = 0; //add moisture levels on top of each other
 int counter = 0;
 
 int getTemp() {
@@ -94,6 +96,8 @@ void loop() {
   delay(1000);
 
   addedTemp = addedTemp + getTemp();
+  addedLight = addedLight + getLightLevel();
+  addedMoist = addedMoist + getMoisture();
   counter++;
 
   // listen for incoming clients
@@ -120,6 +124,13 @@ void loop() {
 
   // calculate the average temperature 
   int meanTemp = addedTemp/counter;
+
+  // calculate the average light level 
+  int meanLight = addedLight/counter;
+  
+  // calculate the average moisture
+  int meanMoist = addedMoist/counter;
+
   // current light level from sensor
   int currentLight = getLightLevel();
 
@@ -157,7 +168,9 @@ void loop() {
     html.replace("darknessMarker", String(darkMin));
     html.replace("moistureMarker", String(currentMoist));
     html.replace("tempMarker", String(currentTemp));
-    html.replace("meanMarker", String(mean));
+    html.replace("meanTempMarker", String(meanTemp)); 
+    html.replace("meanTempMarker", String(meanLight)); 
+    html.replace("meanTempMarker", String(meanMoist)); 
     html.replace("timeMarker", String(counter)); 
     client.println(html);
     client.flush();
